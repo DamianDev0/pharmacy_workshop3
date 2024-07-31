@@ -1,6 +1,5 @@
 import express from 'express';
-export const router = express.Router();
-router.use(express.json());
-router.get('/hola', (req, res) => {
-    res.json({ message: 'Hello, World!' });
-});
+import medicineRouter from '../router/medicineRouter.js';
+const router = express.Router();
+router.use('/medicines', medicineRouter);
+export { router };

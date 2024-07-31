@@ -1,9 +1,8 @@
 import express from 'express';
+import medicineRouter from '../router/medicineRouter';
 
-export const router = express.Router();
+const router = express.Router();
 
-router.use(express.json());
+router.use('/medicines', medicineRouter);
 
-router.get('/hola', (req, res) => {
-  res.json({ message: 'Hello, World!' });
-});
+export { router };
