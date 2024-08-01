@@ -7,7 +7,8 @@ export class MedicineModel {
             return result;
         }
         catch (error) {
-            throw new Error("Error cannot get medication");
+            console.error("Error fetching medicines:", error);
+            throw new Error("Unable to get medicines");
         }
     }
     static async createMedicine(medicine) {
@@ -19,35 +20,35 @@ export class MedicineModel {
                 medicine.expiration_date,
                 medicine.price,
             ]);
-            const insertId = result.insertId; // Adjust based on the result type
+            const insertId = result.insertId;
+            // devuelve medicine con el id de la base de datos
             return {
                 ...medicine,
                 id: insertId,
             };
         }
         catch (error) {
-            console.error("Error al crear el medicamento:", error);
-            throw new Error("No se pudo crear el medicamento");
+            console.error("Error creating the medicine:", error);
+            throw new Error("Unable to create the medicine");
         }
     }
     static async deleteMedicine(medicine) {
         try {
             if (!medicine.id) {
-                throw new Error("ID del medicamento no proporcionado");
+                throw new Error("Medicine ID not provided");
             }
             await pool.query("DELETE FROM medicines WHERE id = ?", [medicine.id]);
         }
         catch (error) {
-            console.error("Error al borrar el medicamento:", error);
-            throw new Error("No se pudo borrar el medicamento");
+            console.error("Error deleting the medicine:", error);
+            throw new Error("Unable to delete the medicine");
         }
     }
     static async updateMedicine(medicine) {
         try {
             if (!medicine.id) {
-                throw new Error('ID del medicamento no proporcionado');
+                throw new Error("Medicine ID not provided");
             }
-            // Ejecuta la consulta de actualización
             const [result] = await pool.query(`UPDATE medicines 
          SET name = ?, quantity = ?, expiration_date = ?, price = ? 
          WHERE id = ?`, [
@@ -57,22 +58,18 @@ export class MedicineModel {
                 medicine.price,
                 medicine.id,
             ]);
-            // Verifica si se actualizó alguna fila
             if (result.affectedRows === 0) {
-                throw new Error('Medicamento no encontrado para actualizar');
+                throw new Error("Medicine not found for update");
             }
-            // Recupera el medicamento actualizado para devolverlo
-            const [rows] = await pool.query(`SELECT * FROM medicines WHERE id = ?`, [medicine.id]);
-            // Cast the rows to Medicine array
+            const [rows] = await pool.query(`SELECT * FROM medicines WHERE id = ?`, [
+                medicine.id,
+            ]);
             const medicineRows = rows;
-            if (medicineRows.length === 0) {
-                throw new Error('Medicamento no encontrado después de la actualización');
-            }
             return medicineRows[0];
         }
         catch (error) {
-            console.error('Error al actualizar el medicamento:', error);
-            throw new Error('No se pudo actualizar el medicamento');
+            console.error("Error updating the medicine:", error);
+            throw new Error("Unable to update the medicine");
         }
     }
 }

@@ -6,3 +6,10 @@ export interface Medicine{
     expiration_date: Date,
     price:number
 }
+
+export interface Pacient{
+    id?:number,
+    name: string,
+    age: number,
+    medical_history: string
+}
