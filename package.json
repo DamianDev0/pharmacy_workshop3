@@ -5,7 +5,7 @@
   "main": "dist/app.js",
   "type": "module",
   "scripts": {
-    "build": "tsc && nodemon",
+    "build": "tsc --watch",
     "start": "node dist/app.js && nodemon",
     "dev": "ts-node app/app.ts"
   },
