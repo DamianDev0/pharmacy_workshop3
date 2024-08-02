@@ -13,3 +13,11 @@ export interface Pacient{
     age: number,
     medical_history: string
 }
+
+export interface Prescriptions{
+    id?:number,
+    medicine_id: number,
+    dosage: number
+    frequency: number,
+    duration: number
+}
